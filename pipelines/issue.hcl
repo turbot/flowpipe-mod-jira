@@ -149,4 +149,60 @@ pipeline "update_issue" {
   }
 }
 
+pipeline "get_issue_details" {
+  description = "Retrieve details of a specific Jira issue."
 
+  param "jira_token" {
+    type    = string
+    default = var.jira_token
+  }
+
+  param "jira_issue_id" {
+    type = string
+  }
+
+  step "http" "get_issue_details" {
+    method = "get"
+    url    = "${var.jira_base}/rest/api/2/issue/${param.jira_issue_id}"
+    request_headers = {
+      Authorization = "Basic ${param.jira_token}"
+    }
+  }
+
+  output "issue_details" {
+    value = jsondecode(step.http.get_issue_details.response_body)
+  }
+}
+
+pipeline "add_comment" {
+  description = "Add a comment to a Jira issue."
+
+  param "jira_token" {
+    type    = string
+    default = var.jira_token
+  }
+
+  param "jira_issue_id" {
+    type = string
+  }
+
+  param "comment_text" {
+    type = string
+  }
+
+  step "http" "add_comment" {
+    method = "post"
+    url    = "${var.jira_base}/rest/api/2/issue/${param.jira_issue_id}/comment"
+    request_headers = {
+      Content-Type  = "application/json"
+      Authorization = "Basic ${param.jira_token}"
+    }
+    request_body = jsonencode({
+      body = param.comment_text
+    })
+  }
+
+  output "comment_id" {
+    value = jsondecode(step.http.add_comment.response_body).id
+  }
+}

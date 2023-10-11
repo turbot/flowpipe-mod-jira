@@ -8,13 +8,13 @@ pipeline "list_issues" {
 
   param "jira_project_key" {
     type    = string
-    default = var.project
+    default = var.jira_project_key
   }
 
   step "http" "list_issues" {
     title  = "List of issues in a Jira project."
     method = "get"
-    url    = "${var.base}/rest/api/2/search?jql=project=${param.jira_project_key}"
+    url    = "${var.jira_base}/rest/api/2/search?jql=project=${param.jira_project_key}"
     request_headers = {
       Content-Type  = "application/json"
       Authorization = "Basic ${param.jira_token}"
@@ -48,43 +48,46 @@ pipeline "create_issue" {
 
   param "jira_project_key" {
     type    = string
-    default = "LW"
+    default = var.jira_project_key
   }
 
   param "issue_type" {
     type = string
-    default = "Bug"  // Defaulting to "Bug", but this can be any valid issue type like "Task", "Story", etc.
+    default = "Task"  
   }
 
   param "summary" {
-    type = "test1"
+    type = string
+    default = "test1"
   }
 
   param "description" {
-    type = "test 1 desc"
+    type = string
+    default = "test 1 desc"
   }
 
   step "http" "create_issue" {
     title  = "Create a new Jira issue."
     method = "post"
-    url    = "https://yourdomain.atlassian.net/rest/api/2/issue"
+    url    = "${var.jira_base}/rest/api/2/issue"
     request_headers = {
       Content-Type  = "application/json"
       Authorization = "Basic ${param.jira_token}"
     }
-    request_body = {
+    request_body = jsonencode({
       fields: {
         project: {
-          key: "${param.project_key}"
+          key: param.jira_project_key
         },
-        summary: "${param.summary}",
-        description: "${param.description}",
+        summary: param.summary,
+        description:  param.description,
         issuetype: {
-          name: "${param.issue_type}"
+          name: param.issue_type
         }
       }
-    }
+    })
   }
+
 
   output "issue_id" {
     value = jsondecode(step.http.create_issue.response_body).id

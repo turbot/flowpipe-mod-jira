@@ -12,7 +12,6 @@ pipeline "list_issues" {
   }
 
   step "http" "list_issues" {
-    title  = "List of issues in a Jira project."
     method = "get"
     url    = "${var.jira_base}/rest/api/2/search?jql=project=${param.jira_project_key}"
     request_headers = {
@@ -58,16 +57,15 @@ pipeline "create_issue" {
 
   param "summary" {
     type = string
-    default = "test1"
+    default = "summary"
   }
 
   param "description" {
     type = string
-    default = "test 1 desc"
+    default = "summary"
   }
 
   step "http" "create_issue" {
-    title  = "Create a new Jira issue."
     method = "post"
     url    = "${var.jira_base}/rest/api/2/issue"
     request_headers = {
@@ -75,22 +73,80 @@ pipeline "create_issue" {
       Authorization = "Basic ${param.jira_token}"
     }
     request_body = jsonencode({
-      fields: {
-        project: {
-          key: param.jira_project_key
+      fields = {
+        project = {
+          key = param.jira_project_key
         },
-        summary: param.summary,
-        description:  param.description,
-        issuetype: {
-          name: param.issue_type
+        summary = param.summary,
+        description =  param.description,
+        issuetype = {
+          name = param.issue_type
         }
       }
     })
   }
 
-
   output "issue_id" {
     value = jsondecode(step.http.create_issue.response_body).id
   }
 }
+
+pipeline "delete_issue" {
+  description = "Delete a Jira issue"
+
+  param "jira_token" {
+    type    = string
+    default = var.jira_token
+  }
+
+  param "jira_issue_id" {
+    type    = string
+  }  
+
+  step "http" "delete_issue" {
+    method = "delete"
+    url    = "${var.jira_base}/rest/api/2/issue/${param.jira_issue_id}"
+    request_headers = {
+      Authorization = "Basic ${param.jira_token}"
+    }
+  }  
+
+}
+
+pipeline "update_issue" {
+  description = "Update an existing Jira issue."
+
+  param "jira_token" {
+    type    = string
+    default = var.jira_token
+  }
+
+  param "jira_issue_id" {
+    type = string
+  }
+
+  param "summary" {
+    type = string
+  }
+
+  param "description" {
+    type = string
+  }
+
+  step "http" "update_issue" {
+    method = "put"
+    url    = "${var.jira_base}/rest/api/2/issue/${param.jira_issue_id}"
+    request_headers = {
+      Content-Type  = "application/json"
+      Authorization = "Basic ${param.jira_token}"
+    }
+    request_body = jsonencode({
+      fields = {
+        summary     = param.summary,
+        description = param.description
+      }
+    })
+  }
+}
+
 

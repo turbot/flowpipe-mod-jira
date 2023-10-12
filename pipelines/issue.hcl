@@ -1,17 +1,21 @@
+locals {
+  api_base = "https://${var.subdomain}.atlassian.net"
+}
+
 pipeline "list_issues" {
   description = "List of issues in a Jira project."
 
-  param "jira_project_key" {
+  param "project_key" {
     type    = string
-    default = var.jira_project_key
+    default = var.project_key
   }
 
   step "http" "list_issues" {
     method = "get"
-    url    = "${var.jira_base}/rest/api/2/search?jql=project=${param.jira_project_key}"
+    url    = "${local.api_base}/rest/api/2/search?jql=project=${param.project_key}"
     request_headers = {
       Content-Type  = "application/json"
-      Authorization = "Basic ${base64encode("${var.jira_user_email}:${var.jira_token}")}"      
+      Authorization = "Basic ${base64encode("${var.user_email}:${var.token}")}"      
     }
   }
 
@@ -27,9 +31,9 @@ pipeline "list_issues" {
 pipeline "create_issue" {
   description = "Create a new Jira issue."
 
-  param "jira_project_key" {
+  param "project_key" {
     type    = string
-    default = var.jira_project_key
+    default = var.project_key
   }
 
   param "issue_type" {
@@ -39,25 +43,23 @@ pipeline "create_issue" {
 
   param "summary" {
     type = string
-    default = "summary"
   }
 
   param "description" {
     type = string
-    default = "summary"
   }
 
   step "http" "create_issue" {
     method = "post"
-    url    = "${var.jira_base}/rest/api/2/issue"
+    url    = "${local.api_base}/rest/api/2/issue"
     request_headers = {
       Content-Type  = "application/json"
-      Authorization = "Basic ${base64encode("${var.jira_user_email}:${var.jira_token}")}"   
+      Authorization = "Basic ${base64encode("${var.user_email}:${var.token}")}"   
     }
     request_body = jsonencode({
       fields = {
         project = {
-          key = param.jira_project_key
+          key = param.project_key
         },
         summary = param.summary,
         description =  param.description,
@@ -68,8 +70,6 @@ pipeline "create_issue" {
     })
   }
 
-  # return whole issue
-
   output "issue_id" {
     value = jsondecode(step.http.create_issue.response_body).id
   }
@@ -78,20 +78,20 @@ pipeline "create_issue" {
 pipeline "delete_issue" {
   description = "Delete a Jira issue"
 
-  param "jira_token" {
+  param "token" {
     type    = string
-    default = var.jira_token
+    default = var.token
   }
 
-  param "jira_issue_id" {
-    type    = string
+  param "issue_id" {
+    type    = number
   }  
 
   step "http" "delete_issue" {
     method = "delete"
-    url    = "${var.jira_base}/rest/api/2/issue/${param.jira_issue_id}"
+    url    = "${local.api_base}/rest/api/2/issue/${param.issue_id}"
     request_headers = {
-      Authorization = "Basic ${base64encode("${var.jira_user_email}:${var.jira_token}")}"   
+      Authorization = "Basic ${base64encode("${var.user_email}:${var.token}")}"   
     }
   }  
 
@@ -100,12 +100,12 @@ pipeline "delete_issue" {
 pipeline "update_issue" {
   description = "Update an existing Jira issue."
 
-  param "jira_token" {
+  param "token" {
     type    = string
-    default = var.jira_token
+    default = var.token
   }
 
-  param "jira_issue_id" {
+  param "issue_id" {
     type = string
   }
 
@@ -117,13 +117,12 @@ pipeline "update_issue" {
     type = string
   }
 
-# if api gives back issue, output it, else status
   step "http" "update_issue" {
     method = "put"
-    url    = "${var.jira_base}/rest/api/2/issue/${param.jira_issue_id}"
+    url    = "${local.api_base}/rest/api/2/issue/${param.issue_id}"
     request_headers = {
       Content-Type  = "application/json"
-      Authorization = "Basic ${base64encode("${var.jira_user_email}:${var.jira_token}")}"   
+      Authorization = "Basic ${base64encode("${var.user_email}:${var.token}")}"   
     }
     request_body = jsonencode({
       fields = {
@@ -132,25 +131,30 @@ pipeline "update_issue" {
       }
     })
   }
+
+  output "response_body" {
+    value = step.http.update_issue.status
+  }
+
 }
 
 pipeline "get_issue" {
   description = "Retrieve details of a specific Jira issue."
 
-  param "jira_token" {
+  param "token" {
     type    = string
-    default = var.jira_token
+    default = var.token
   }
 
-  param "jira_issue_id" {
+  param "issue_id" {
     type = string
   }
 
   step "http" "get_issue_details" {
     method = "get"
-    url    = "${var.jira_base}/rest/api/2/issue/${param.jira_issue_id}"
+    url    = "${local.api_base}/rest/api/2/issue/${param.issue_id}"
     request_headers = {
-      Authorization = "Basic ${base64encode("${var.jira_user_email}:${var.jira_token}")}"   
+      Authorization = "Basic ${base64encode("${var.user_email}:${var.token}")}"   
     }
   }
 
@@ -162,12 +166,12 @@ pipeline "get_issue" {
 pipeline "add_comment" {
   description = "Add a comment to a Jira issue."
 
-  param "jira_token" {
+  param "token" {
     type    = string
-    default = var.jira_token
+    default = var.token
   }
 
-  param "jira_issue_id" {
+  param "issue_id" {
     type = string
   }
 
@@ -177,17 +181,17 @@ pipeline "add_comment" {
 
   step "http" "add_comment" {
     method = "post"
-    url    = "${var.jira_base}/rest/api/2/issue/${param.jira_issue_id}/comment"
+    url    = "${local.api_base}/rest/api/2/issue/${param.issue_id}/comment"
     request_headers = {
       Content-Type  = "application/json"
-      Authorization = "Basic ${base64encode("${var.jira_user_email}:${var.jira_token}")}"   
+      Authorization = "Basic ${base64encode("${var.user_email}:${var.token}")}"   
     }
     request_body = jsonencode({
       body = param.comment_text
     })
   }
 
-  output "comment_id" {
-    value = jsondecode(step.http.add_comment.response_body).id
+  output "status" {
+    value = step.http.add_comment.status
   }
 }

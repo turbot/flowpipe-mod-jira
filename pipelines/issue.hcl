@@ -93,6 +93,10 @@ pipeline "delete_issue" {
     request_headers = {
       Authorization = "Basic ${base64encode("${var.user_email}:${var.token}")}"   
     }
+  }
+
+  output "status" {
+    value = step.http.delete_issue.status
   }  
 
 }

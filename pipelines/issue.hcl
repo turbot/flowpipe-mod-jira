@@ -21,15 +21,7 @@ pipeline "list_issues" {
   output "total_issues" {
     value = jsondecode(step.http.list_issues.response_body).total
   }
-  output "response_body" {
-    value = step.http.list_issues.response_body
-  }
-  output "response_headers" {
-    value = step.http.list_issues.response_headers
-  }
-  output "status_code" {
-    value = step.http.list_issues.status_code
-  }
+
 }
 
 pipeline "create_issue" {
@@ -75,6 +67,8 @@ pipeline "create_issue" {
       }
     })
   }
+
+  # return whole issue
 
   output "issue_id" {
     value = jsondecode(step.http.create_issue.response_body).id
@@ -123,6 +117,7 @@ pipeline "update_issue" {
     type = string
   }
 
+# if api gives back issue, output it, else status
   step "http" "update_issue" {
     method = "put"
     url    = "${var.jira_base}/rest/api/2/issue/${param.jira_issue_id}"
@@ -139,7 +134,7 @@ pipeline "update_issue" {
   }
 }
 
-pipeline "get_issue_details" {
+pipeline "get_issue" {
   description = "Retrieve details of a specific Jira issue."
 
   param "jira_token" {

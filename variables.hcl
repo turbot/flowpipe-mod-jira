@@ -1,21 +1,19 @@
 variable "token" {
   type        = string
-  description = "The Jira API token"
-  default     = ""
+  description = "Jira API token"
 }
 
 variable "user_email"{
   type = string
   description = "The user's email"
-  default = ""
 }
 
-variable "subdomain" {
+variable "api_base_url" {
   type = string
-  default = ""
+  description = "Jira API base URL."
 }
 
 variable "project_key" {
   type = string
-  default = ""
+  description = "Jira project key."
 }

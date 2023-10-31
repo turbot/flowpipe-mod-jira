@@ -1,25 +1,49 @@
 pipeline "delete_issue" {
-  description = "Delete a Jira issue"
+  title       = "Delete an Issue"
+  description = "Delete an issue"
+
+  param "api_base_url" {
+    type        = string
+    description = "Jira API base url."
+    default     = var.api_base_url
+  }
 
   param "token" {
+    type        = string
+    description = "Jira access token."
+    default     = var.token
+    # TODO: Add once supported
+    # sensitive  = true
+  }
+
+  param "user_email" {
     type    = string
-    default = var.token
+    description = "The email-id of the user."
+    default = var.user_email
   }
 
   param "issue_id" {
+    description = "Issue ID."
     type    = number
-  }  
+  }
 
   step "http" "delete_issue" {
     method = "delete"
-    url    = "${local.api_base}/rest/api/2/issue/${param.issue_id}"
+    url    = "${param.api_base_url}/rest/api/2/issue/${param.issue_id}"
     request_headers = {
-      Authorization = "Basic ${base64encode("${var.user_email}:${var.token}")}"   
+      Content-Type  = "application/json"
     }
+
+    basic_auth  {
+      username = param.user_email
+      password = param.token
+    }
+
   }
 
   output "status" {
+    description = "Deletion status."
     value = step.http.delete_issue.status
-  }  
+  }
 
 }

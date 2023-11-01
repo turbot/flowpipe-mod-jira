@@ -1,19 +1,21 @@
 variable "token" {
   type        = string
-  description = "Jira API token"
+  description = "API access token"
+  # TODO: Add once supported
+  # sensitive  = true
 }
 
-variable "user_email"{
-  type = string
-  description = "The user's email"
+variable "user_email" {
+  type        = string
+  description = "Email-id of the user."
 }
 
 variable "api_base_url" {
-  type = string
-  description = "Jira API base URL."
+  type        = string
+  description = "API base URL."
 }
 
 variable "project_key" {
-  type = string
-  description = "Jira project key."
+  type        = string
+  description = "The key identifying the project."
 }

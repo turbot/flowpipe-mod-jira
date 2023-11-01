@@ -4,13 +4,13 @@ pipeline "delete_issue" {
 
   param "api_base_url" {
     type        = string
-    description = "Jira API base url."
+    description = "API base url."
     default     = var.api_base_url
   }
 
   param "token" {
     type        = string
-    description = "Jira access token."
+    description = "API access token."
     default     = var.token
     # TODO: Add once supported
     # sensitive  = true
@@ -18,7 +18,7 @@ pipeline "delete_issue" {
 
   param "user_email" {
     type        = string
-    description = "The email-id of the user."
+    description = "Email-id of the user."
     default     = var.user_email
   }
 

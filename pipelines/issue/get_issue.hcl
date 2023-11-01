@@ -18,32 +18,32 @@ pipeline "get_issue" {
   }
 
   param "user_email" {
-    type    = string
+    type        = string
     description = "The email-id of the Jira user."
-    default = var.user_email
+    default     = var.user_email
   }
 
-  // CHECK
   param "issue_id" {
-    type = string
+    description = "Issue ID."
+    type        = number
   }
 
   step "http" "get_issue_details" {
     method = "get"
     url    = "${param.api_base_url}/rest/api/2/issue/${param.issue_id}"
     request_headers = {
-      Content-Type  = "application/json"
+      Content-Type = "application/json"
     }
 
-    basic_auth  {
+    basic_auth {
       username = param.user_email
       password = param.token
     }
 
   }
 
-  output "issue_details" {
+  output "issue" {
     description = "Details about the issue."
-    value = step.http.get_issue_details.response_body
+    value       = step.http.get_issue_details.response_body
   }
 }

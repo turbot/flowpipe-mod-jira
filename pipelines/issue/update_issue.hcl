@@ -17,36 +17,34 @@ pipeline "update_issue" {
   }
 
   param "user_email" {
-    type    = string
+    type        = string
     description = "The email-id of the user."
-    default = var.user_email
+    default     = var.user_email
   }
 
   param "issue_id" {
     description = "Issue ID."
-    type    = number
+    type        = number
   }
 
   param "summary" {
-    type = string
+    type        = string
     description = "Issue summary."
-    default = "Flowpipe update"
   }
 
   param "description" {
-    type = string
+    type        = string
     description = "Issue description."
-    default = "Flowpipe update"
   }
 
   step "http" "update_issue" {
     method = "put"
     url    = "${param.api_base_url}/rest/api/2/issue/${param.issue_id}"
     request_headers = {
-      Content-Type  = "application/json"
+      Content-Type = "application/json"
     }
 
-    basic_auth  {
+    basic_auth {
       username = param.user_email
       password = param.token
     }
@@ -57,11 +55,6 @@ pipeline "update_issue" {
         description = param.description
       }
     })
-  }
-
-  output "update_status" {
-    description = "Issue update status."
-    value = step.http.update_issue.status
   }
 
 }

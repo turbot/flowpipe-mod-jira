@@ -1,5 +1,5 @@
 pipeline "create_issue" {
-  title = "Create an Issue"
+  title       = "Create an Issue"
   description = "Create a new issue."
 
   param "api_base_url" {
@@ -17,44 +17,40 @@ pipeline "create_issue" {
   }
 
   param "user_email" {
-    type    = string
+    type        = string
     description = "The email-id of the user."
-    default = var.user_email
+    default     = var.user_email
   }
 
   param "project_key" {
-    type    = string
+    type        = string
     description = "The key of the project."
-    default = var.project_key
+    default     = var.project_key
   }
 
-//CHECK
   param "issue_type" {
-    type = string
+    type        = string
     description = "Issue type."
-    default = "Task"
   }
 
   param "summary" {
-    type = string
+    type        = string
     description = "Issue summary."
-    default = "Flowpipe"
   }
 
   param "description" {
-    type = string
+    type        = string
     description = "Issue description."
-    default = "Flowpipe"
   }
 
   step "http" "create_issue" {
     method = "post"
     url    = "${param.api_base_url}/rest/api/2/issue"
     request_headers = {
-      Content-Type  = "application/json"
+      Content-Type = "application/json"
     }
 
-    basic_auth  {
+    basic_auth {
       username = param.user_email
       password = param.token
     }
@@ -64,8 +60,8 @@ pipeline "create_issue" {
         project = {
           key = param.project_key
         },
-        summary = param.summary,
-        description =  param.description,
+        summary     = param.summary,
+        description = param.description,
         issuetype = {
           name = param.issue_type
         }
@@ -73,8 +69,8 @@ pipeline "create_issue" {
     })
   }
 
-  output "issue_id" {
-    description = "ID of the issue."
-    value = step.http.create_issue.response_body.id
+  output "issue" {
+    description = "Issue metadata."
+    value       = step.http.create_issue.response_body
   }
 }

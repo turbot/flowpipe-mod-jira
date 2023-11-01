@@ -1,6 +1,6 @@
 pipeline "add_comment" {
   title       = "Add comment to the Issue"
-  description = "Add a comment to an issue."
+  description = "Add comment to the issue."
 
   param "api_base_url" {
     type        = string
@@ -17,27 +17,29 @@ pipeline "add_comment" {
   }
 
   param "user_email" {
-    type    = string
-    description = "The email-id of the user."
-    default = var.user_email
+    type        = string
+    description = "The email-id of the Jira user."
+    default     = var.user_email
   }
 
   param "issue_id" {
-    type = string
+    type        = string
+    description = "Issue ID."
   }
 
   param "comment_text" {
-    type = string
+    type        = string
+    description = "Issue comment."
   }
 
   step "http" "add_comment" {
     method = "post"
     url    = "${param.api_base_url}/rest/api/2/issue/${param.issue_id}/comment"
     request_headers = {
-      Content-Type  = "application/json"
+      Content-Type = "application/json"
     }
 
-    basic_auth  {
+    basic_auth {
       username = param.user_email
       password = param.token
     }
@@ -48,6 +50,7 @@ pipeline "add_comment" {
   }
 
   output "status" {
-    value = step.http.add_comment.status
+    description = "Details about the issue comment."
+    value       = step.http.add_comment.response_body
   }
 }

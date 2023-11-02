@@ -1,21 +1,21 @@
 variable "token" {
   type        = string
-  description = "The Jira API token"
-  default     = ""
+  description = "API access token"
+  # TODO: Add once supported
+  # sensitive  = true
 }
 
-variable "user_email"{
-  type = string
-  description = "The user's email"
-  default = ""
+variable "user_email" {
+  type        = string
+  description = "Email-id of the user."
 }
 
-variable "subdomain" {
-  type = string
-  default = ""
+variable "api_base_url" {
+  type        = string
+  description = "API base URL."
 }
 
 variable "project_key" {
-  type = string
-  default = ""
+  type        = string
+  description = "The key identifying the project."
 }

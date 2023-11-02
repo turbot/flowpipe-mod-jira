@@ -1,40 +1,60 @@
 pipeline "update_issue" {
-  description = "Update an existing Jira issue."
+  title       = "Update an Issue"
+  description = "Update an existing issue."
+
+  param "api_base_url" {
+    type        = string
+    description = "API base url."
+    default     = var.api_base_url
+  }
 
   param "token" {
-    type    = string
-    default = var.token
+    type        = string
+    description = "API access token."
+    default     = var.token
+    # TODO: Add once supported
+    # sensitive  = true
+  }
+
+  param "user_email" {
+    type        = string
+    description = "Email-id of the user."
+    default     = var.user_email
   }
 
   param "issue_id" {
-    type = string
+    description = "Issue ID."
+    type        = number
   }
 
   param "summary" {
-    type = string
+    type        = string
+    description = "Issue summary."
   }
 
   param "description" {
-    type = string
+    type        = string
+    description = "Issue description."
   }
 
   step "http" "update_issue" {
     method = "put"
-    url    = "${local.api_base}/rest/api/2/issue/${param.issue_id}"
+    url    = "${param.api_base_url}/rest/api/2/issue/${param.issue_id}"
     request_headers = {
-      Content-Type  = "application/json"
-      Authorization = "Basic ${base64encode("${var.user_email}:${var.token}")}"   
+      Content-Type = "application/json"
     }
+
+    basic_auth {
+      username = param.user_email
+      password = param.token
+    }
+
     request_body = jsonencode({
       fields = {
         summary     = param.summary,
         description = param.description
       }
     })
-  }
-
-  output "response_body" {
-    value = step.http.update_issue.status
   }
 
 }

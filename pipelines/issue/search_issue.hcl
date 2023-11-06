@@ -1,4 +1,4 @@
-pipeline "search_issues_by_JQL" {
+pipeline "search_issues_by_jql" {
   title       = "Search Issues in Jira"
   description = "Search for issues in Jira based on JQL."
 
@@ -28,7 +28,7 @@ pipeline "search_issues_by_JQL" {
     default     = "project = test-turbot"
   }
 
-  step "http" "search_issues_by_JQL" {
+  step "http" "search_issues_by_jql" {
     method = "get"
     url    = "${param.api_base_url}/rest/api/3/search?jql=${urlencode(param.jql_query)}"
     request_headers = {
@@ -43,6 +43,6 @@ pipeline "search_issues_by_JQL" {
 
   output "issues" {
     description = "List of issues matching the JQL query."
-    value       = step.http.search_issues_by_JQL.response_body
+    value       = step.http.search_issues_by_jql.response_body
   }
 }

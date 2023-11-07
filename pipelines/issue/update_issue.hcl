@@ -24,7 +24,7 @@ pipeline "update_issue" {
 
   param "issue_id" {
     description = "Issue ID."
-    type        = number
+    type        = string
   }
 
   param "summary" {

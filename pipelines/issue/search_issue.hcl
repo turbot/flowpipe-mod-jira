@@ -25,7 +25,6 @@ pipeline "search_issues_by_jql" {
   param "jql_query" {
     type        = string
     description = "JQL query for searching issues."
-    default     = "project = test-turbot"
   }
 
   step "http" "search_issues_by_jql" {
@@ -39,10 +38,19 @@ pipeline "search_issues_by_jql" {
       username = param.user_email
       password = param.token
     }
+
+    error {
+      ignore = true
+    }
   }
 
   output "issues" {
     description = "List of issues matching the JQL query."
-    value       = step.http.search_issues_by_jql.response_body
+    value = step.http.search_issues_by_jql.response_body
+  }
+
+  output "count" {
+    description = "Number of issues matching the JQL query."
+    value       = can(step.http.search_issues_by_jql.response_body.issues) ? length(step.http.search_issues_by_jql.response_body.issues) : 0
   }
 }

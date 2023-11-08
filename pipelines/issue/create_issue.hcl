@@ -12,8 +12,6 @@ pipeline "create_issue" {
     type        = string
     description = "API access token."
     default     = var.token
-    # TODO: Add once supported
-    # sensitive  = true
   }
 
   param "user_email" {
@@ -41,6 +39,19 @@ pipeline "create_issue" {
   param "description" {
     type        = string
     description = "Issue description."
+    optional    = true
+  }
+
+  param "priority" {
+    type        = string
+    optional    = true
+    description = "Issue priority."
+  }
+
+  param "assignee_id" {
+    type        = string
+    optional    = true
+    description = "Assignee id."
   }
 
   step "http" "create_issue" {
@@ -61,10 +72,12 @@ pipeline "create_issue" {
           key = param.project_key
         },
         summary     = param.summary,
-        description = param.description,
+        description = param.description != null ? param.description : null,
         issuetype = {
           name = param.issue_type
-        }
+        },
+        priority = param.priority != null ? { name = param.priority } : { name = "Medium" },
+        assignee = param.assignee_id != null ? { id = param.assignee_id } : { id = "" }
       }
     })
   }

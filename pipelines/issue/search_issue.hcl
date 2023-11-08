@@ -29,7 +29,7 @@ pipeline "search_issues_by_jql" {
 
   step "http" "search_issues_by_jql" {
     method = "get"
-    url    = "${param.api_base_url}/rest/api/3/search?jql=${urlencode(param.jql_query)}"
+    url    = "${param.api_base_url}/rest/api/2/search?jql=${urlencode(param.jql_query)}"
     request_headers = {
       Accept = "application/json"
     }

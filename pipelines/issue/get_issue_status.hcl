@@ -29,14 +29,9 @@ pipeline "get_issue_status" {
     type        = string
   }
 
-  // curl --request GET \
-  //   --url 'https://turbot-turbot.atlassian.net/rest/api/3/issue/USERMGMT-1?fields=status' \
-  //   --user 'raj@turbot.com:N887JDusxmwrrUVMKHmJBB6B' \
-  //   --header 'Accept: application/json'
-
   step "http" "get_issue_status" {
     method = "get"
-    url    = "${param.api_base_url}/rest/api/3/issue/${param.issue_id}?fields=status"
+    url    = "${param.api_base_url}/rest/api/2/issue/${param.issue_id}?fields=status"
     request_headers = {
       Content-Type = "application/json"
     }
@@ -51,10 +46,5 @@ pipeline "get_issue_status" {
   output "issue" {
     description = "Details about the issue."
     value       = step.http.get_issue_status.response_body
-  }
-
-  output "status" {
-    description = "Details about the issue."
-    value       = step.http.get_issue_status.response_body.fields.status.name
   }
 }

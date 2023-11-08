@@ -1,6 +1,6 @@
 pipeline "create_issue" {
   title       = "Create an Issue"
-  description = "Create a new issue."
+  description = "Create a new issue in a Jira project."
 
   param "api_base_url" {
     type        = string
@@ -83,7 +83,7 @@ pipeline "create_issue" {
   }
 
   output "issue" {
-    description = "Issue metadata."
+    description = "Details about the issue."
     value       = step.http.create_issue.response_body
   }
 }

@@ -1,6 +1,6 @@
 pipeline "list_issues" {
   title       = "List Issues"
-  description = "List of issues."
+  description = "List of issues in a Jira project."
 
   param "api_base_url" {
     type        = string

@@ -1,7 +1,7 @@
 
 pipeline "get_issue_status" {
   title       = "Get an issue status"
-  description = "Retrieve issue status."
+  description = "Retrieve issue by status."
 
   param "api_base_url" {
     type        = string

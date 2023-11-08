@@ -1,6 +1,6 @@
 pipeline "delete_issue" {
   title       = "Delete an Issue"
-  description = "Delete an issue"
+  description = "Delete an issue from a project in Jira."
 
   param "api_base_url" {
     type        = string
@@ -38,7 +38,5 @@ pipeline "delete_issue" {
       username = param.user_email
       password = param.token
     }
-
   }
-
 }

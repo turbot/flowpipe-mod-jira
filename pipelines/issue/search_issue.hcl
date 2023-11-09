@@ -46,6 +46,6 @@ pipeline "search_issues_by_jql" {
 
   output "issues" {
     description = "List of issues matching the JQL query."
-    value       = step.http.search_issues_by_jql.status_code == 400 ? null : step.http.search_issues_by_jql.response_body
+    value       = step.http.search_issues_by_jql.status_code == 400 ? null : step.http.search_issues_by_jql.response_body.issues
   }
 }

@@ -40,14 +40,14 @@ pipeline "update_issue" {
 
   param "priority" {
     type        = string
-    optional    = true
     description = "Issue priority."
+    optional    = true
   }
 
   param "assignee_id" {
     type        = string
-    optional    = true
     description = "Assignee id."
+    optional    = true
   }
 
   step "http" "update_issue" {
@@ -67,7 +67,7 @@ pipeline "update_issue" {
         summary     = param.summary,
         description = param.description != null ? param.description : null,
         priority    = param.priority != null ? { name = param.priority } : { name = "Medium" },
-        assignee    = param.assignee_id != null ? { id = param.assignee_id } : { id = "" }
+        assignee    = param.assignee_id != null ? { id = param.assignee_id } : {}
       }
     })
   }

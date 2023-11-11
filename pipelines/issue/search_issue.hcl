@@ -4,13 +4,13 @@ pipeline "search_issues_by_jql" {
 
   param "api_base_url" {
     type        = string
-    description = "API base URL for your Jira instance."
+    description = local.api_base_url_param_description
     default     = var.api_base_url
   }
 
   param "token" {
     type        = string
-    description = "API access token for authentication."
+    description = local.token_param_description
     default     = var.token
     # TODO: Add once supported
     # sensitive  = true
@@ -18,7 +18,7 @@ pipeline "search_issues_by_jql" {
 
   param "user_email" {
     type        = string
-    description = "The email ID of the Jira user."
+    description = local.user_email_param_description
     default     = var.user_email
   }
 

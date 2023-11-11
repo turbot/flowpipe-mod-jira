@@ -5,13 +5,13 @@ pipeline "get_issue" {
 
   param "api_base_url" {
     type        = string
-    description = "API base url."
+    description = local.api_base_url_param_description
     default     = var.api_base_url
   }
 
   param "token" {
     type        = string
-    description = "API access token."
+    description = local.token_param_description
     default     = var.token
     # TODO: Add once supported
     # sensitive  = true
@@ -19,7 +19,7 @@ pipeline "get_issue" {
 
   param "user_email" {
     type        = string
-    description = "The email-id of the Jira user."
+    description = local.user_email_param_description
     default     = var.user_email
   }
 

@@ -1,7 +1,6 @@
-
-pipeline "get_issue_status" {
-  title       = "Get an issue status"
-  description = "Retrieve issue by status."
+pipeline "close_issue" {
+  title       = "Close an Issue"
+  description = "Close an issue in a project in Jira."
 
   param "api_base_url" {
     type        = string
@@ -23,28 +22,32 @@ pipeline "get_issue_status" {
     default     = var.user_email
   }
 
-  # Here we can pass issue ID as well as issue KEY
   param "issue_id" {
     description = "Issue ID."
     type        = string
   }
 
-  step "http" "get_issue_status" {
-    method = "get"
-    url    = "${param.api_base_url}/rest/api/2/issue/${param.issue_id}?fields=status"
+  param "transition_id" {
+    description = "ID of the transition for closing the issue."
+    type        = number
+  }
+
+  step "http" "close_issue" {
+    method = "post"
+    url    = "${param.api_base_url}/rest/api/2/issue/${param.issue_id}/transitions"
     request_headers = {
       Content-Type = "application/json"
     }
+
+    request_body = jsonencode({
+      transition = {
+        id = param.transition_id
+      }
+    })
 
     basic_auth {
       username = param.user_email
       password = param.token
     }
-
-  }
-
-  output "issue" {
-    description = "Details about the issue."
-    value       = step.http.get_issue_status.response_body
   }
 }

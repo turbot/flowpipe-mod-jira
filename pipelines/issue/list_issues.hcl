@@ -4,13 +4,13 @@ pipeline "list_issues" {
 
   param "api_base_url" {
     type        = string
-    description = "API base url."
+    description = local.api_base_url_param_description
     default     = var.api_base_url
   }
 
   param "token" {
     type        = string
-    description = "API access token."
+    description = local.token_param_description
     default     = var.token
     # TODO: Add once supported
     # sensitive  = true
@@ -18,13 +18,13 @@ pipeline "list_issues" {
 
   param "user_email" {
     type        = string
-    description = "Email-id of the user."
+    description = local.user_email_param_description
     default     = var.user_email
   }
 
   param "project_key" {
     type        = string
-    description = "The key of the project."
+    description = local.project_key_param_description
     default     = var.project_key
   }
 

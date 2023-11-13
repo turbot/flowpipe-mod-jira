@@ -1,3 +1,7 @@
+---
+repository: "https://github.com/turbot/flowpipe-mod-jira"
+---
+
 # Jira Mod for Flowpipe
 
 A collection of [Flowpipe](https://flowpipe.io) pipelines that can be used to:
@@ -5,8 +9,6 @@ A collection of [Flowpipe](https://flowpipe.io) pipelines that can be used to:
 - Update issues
 - Delete issues
 - And more!
-
-![image](https://github.com/turbot/flowpipe-mod-jira/blob/staging/docs/images/flowpipe_test_run.png?raw=true)
 
 ## Documentation
 
@@ -50,11 +52,13 @@ Variables with defaults set do not need to be explicitly set, but it may be help
 
 ### Usage
 
-Start your server to get started:
+Start the Flowpipe server to get started:
 
 ```sh
 flowpipe service start
 ```
+
+Run a pipeline:
 
 Run a pipeline:
 

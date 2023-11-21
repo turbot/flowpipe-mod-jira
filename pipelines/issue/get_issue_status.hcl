@@ -25,8 +25,8 @@ pipeline "get_issue_status" {
 
   # Here we can pass issue ID as well as issue KEY
   param "issue_id" {
-    description = "Issue ID."
     type        = string
+    description = local.issue_id_param_description
   }
 
   step "http" "get_issue_status" {

@@ -4,19 +4,21 @@ pipeline "get_issue_transitions" {
 
   param "api_base_url" {
     type        = string
-    description = "Jira API base url."
+    description = local.api_base_url_param_description
     default     = var.api_base_url
   }
 
   param "token" {
     type        = string
-    description = "Jira API access token."
+    description = local.token_param_description
     default     = var.token
+    # TODO: Add once supported
+    # sensitive  = true
   }
 
   param "user_email" {
     type        = string
-    description = "Email-id of the Jira user."
+    description = local.user_email_param_description
     default     = var.user_email
   }
 

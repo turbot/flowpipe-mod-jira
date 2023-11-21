@@ -24,7 +24,7 @@ pipeline "add_comment" {
 
   param "issue_id" {
     type        = string
-    description = "Issue ID."
+    description = local.issue_id_param_description
   }
 
   param "comment_text" {

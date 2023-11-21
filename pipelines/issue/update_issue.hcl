@@ -23,8 +23,8 @@ pipeline "update_issue" {
   }
 
   param "issue_id" {
-    description = "Issue ID."
     type        = string
+    description = local.issue_id_param_description
   }
 
   param "summary" {

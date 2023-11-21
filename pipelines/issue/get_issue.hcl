@@ -24,8 +24,8 @@ pipeline "get_issue" {
   }
 
   param "issue_id" {
-    description = "Issue ID."
     type        = number
+    description = local.issue_id_param_description
   }
 
   step "http" "get_issue_details" {

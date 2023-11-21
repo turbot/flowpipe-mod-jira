@@ -23,8 +23,8 @@ pipeline "delete_issue" {
   }
 
   param "issue_id" {
-    description = "Issue ID."
     type        = number
+    description = local.issue_id_param_description
   }
 
   step "http" "delete_issue" {

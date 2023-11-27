@@ -1,7 +1,6 @@
-
-pipeline "get_issue" {
-  title       = "Get an issue detail"
-  description = "Retrieve details about the issue."
+pipeline "delete_issue" {
+  title       = "Delete an Issue"
+  description = "Delete an issue from a project in Jira."
 
   param "api_base_url" {
     type        = string
@@ -24,12 +23,12 @@ pipeline "get_issue" {
   }
 
   param "issue_id" {
-    description = "Issue ID."
     type        = number
+    description = local.issue_id_param_description
   }
 
-  step "http" "get_issue_details" {
-    method = "get"
+  step "http" "delete_issue" {
+    method = "delete"
     url    = "${param.api_base_url}/rest/api/2/issue/${param.issue_id}"
     request_headers = {
       Content-Type = "application/json"
@@ -39,11 +38,5 @@ pipeline "get_issue" {
       username = param.user_email
       password = param.token
     }
-
-  }
-
-  output "issue" {
-    description = "Details about the issue."
-    value       = step.http.get_issue_details.response_body
   }
 }

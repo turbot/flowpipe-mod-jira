@@ -1,6 +1,6 @@
-pipeline "delete_issue" {
-  title       = "Delete an Issue"
-  description = "Delete an issue from a project in Jira."
+pipeline "add_comment" {
+  title       = "Add comment to the Issue"
+  description = "Add comment to the issue."
 
   param "api_base_url" {
     type        = string
@@ -23,13 +23,18 @@ pipeline "delete_issue" {
   }
 
   param "issue_id" {
-    description = "Issue ID."
-    type        = number
+    type        = string
+    description = local.issue_id_param_description
   }
 
-  step "http" "delete_issue" {
-    method = "delete"
-    url    = "${param.api_base_url}/rest/api/2/issue/${param.issue_id}"
+  param "comment_text" {
+    type        = string
+    description = "Issue comment."
+  }
+
+  step "http" "add_comment" {
+    method = "post"
+    url    = "${param.api_base_url}/rest/api/2/issue/${param.issue_id}/comment"
     request_headers = {
       Content-Type = "application/json"
     }
@@ -38,5 +43,14 @@ pipeline "delete_issue" {
       username = param.user_email
       password = param.token
     }
+
+    request_body = jsonencode({
+      body = param.comment_text
+    })
+  }
+
+  output "status" {
+    description = "Details about the issue comment."
+    value       = step.http.add_comment.response_body
   }
 }

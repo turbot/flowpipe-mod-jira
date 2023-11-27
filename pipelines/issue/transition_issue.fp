@@ -1,6 +1,6 @@
-pipeline "close_issue" {
-  title       = "Close an Issue"
-  description = "Close an issue in a project in Jira."
+pipeline "transition_issue" {
+  title       = "Performs an issue transition"
+  description = "Performs an issue transition updates the fields from the transition."
 
   param "api_base_url" {
     type        = string
@@ -23,8 +23,8 @@ pipeline "close_issue" {
   }
 
   param "issue_id" {
-    description = "Issue ID."
     type        = string
+    description = local.issue_id_param_description
   }
 
   param "transition_id" {
@@ -32,7 +32,7 @@ pipeline "close_issue" {
     type        = number
   }
 
-  step "http" "close_issue" {
+  step "http" "transition_issue" {
     method = "post"
     url    = "${param.api_base_url}/rest/api/2/issue/${param.issue_id}/transitions"
     request_headers = {

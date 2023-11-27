@@ -1,6 +1,7 @@
-pipeline "add_comment" {
-  title       = "Add comment to the Issue"
-  description = "Add comment to the issue."
+
+pipeline "get_issue" {
+  title       = "Get an issue detail"
+  description = "Retrieve details about the issue."
 
   param "api_base_url" {
     type        = string
@@ -23,18 +24,13 @@ pipeline "add_comment" {
   }
 
   param "issue_id" {
-    type        = string
-    description = "Issue ID."
+    type        = number
+    description = local.issue_id_param_description
   }
 
-  param "comment_text" {
-    type        = string
-    description = "Issue comment."
-  }
-
-  step "http" "add_comment" {
-    method = "post"
-    url    = "${param.api_base_url}/rest/api/2/issue/${param.issue_id}/comment"
+  step "http" "get_issue_details" {
+    method = "get"
+    url    = "${param.api_base_url}/rest/api/2/issue/${param.issue_id}"
     request_headers = {
       Content-Type = "application/json"
     }
@@ -44,13 +40,10 @@ pipeline "add_comment" {
       password = param.token
     }
 
-    request_body = jsonencode({
-      body = param.comment_text
-    })
   }
 
-  output "status" {
-    description = "Details about the issue comment."
-    value       = step.http.add_comment.response_body
+  output "issue" {
+    description = "Details about the issue."
+    value       = step.http.get_issue_details.response_body
   }
 }

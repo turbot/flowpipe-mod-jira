@@ -12,8 +12,6 @@ pipeline "search_issues_by_jql" {
     type        = string
     description = local.token_param_description
     default     = var.token
-    # TODO: Add once supported
-    # sensitive  = true
   }
 
   param "user_email" {

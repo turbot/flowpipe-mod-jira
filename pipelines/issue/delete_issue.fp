@@ -1,6 +1,6 @@
 pipeline "delete_issue" {
   title       = "Delete an Issue"
-  description = "Delete an issue from a project in Jira."
+  description = "Delete an issue from a project in Jira.(Note:An issue cannot be deleted if it has one or more subtasks.)"
 
   param "api_base_url" {
     type        = string
@@ -12,8 +12,6 @@ pipeline "delete_issue" {
     type        = string
     description = local.token_param_description
     default     = var.token
-    # TODO: Add once supported
-    # sensitive  = true
   }
 
   param "user_email" {

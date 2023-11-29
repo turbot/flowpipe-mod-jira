@@ -1,6 +1,6 @@
 pipeline "get_issue_transitions" {
   title       = "Get Issue Transitions"
-  description = "Get available transitions for a Jira issue."
+  description = "Returns either all transitions or a transition that can be performed by the user on a Jira issue"
 
   param "api_base_url" {
     type        = string
@@ -12,8 +12,6 @@ pipeline "get_issue_transitions" {
     type        = string
     description = local.token_param_description
     default     = var.token
-    # TODO: Add once supported
-    # sensitive  = true
   }
 
   param "user_email" {

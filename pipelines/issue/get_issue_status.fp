@@ -13,8 +13,6 @@ pipeline "get_issue_status" {
     type        = string
     description = local.token_param_description
     default     = var.token
-    # TODO: Add once supported
-    # sensitive  = true
   }
 
   param "user_email" {

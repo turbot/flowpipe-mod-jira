@@ -44,7 +44,7 @@ vi flowpipe.pvars
 
 It's recommended to configure credentials through [input variables](https://flowpipe.io/docs/using-flowpipe/mod-variables) by setting them in the `flowpipe.pvars` file.
 
-**Note:** Credentials can also be passed in each pipeline run with `--pipeline-args access_token=N887JaasasasaVMsdJBB6B`.
+**Note:** Credentials can also be passed in each pipeline run with `--args access_token=N887JaasasasaVMsdJBB6B`.
 
 Additional input variables may be defined in the mod's `variables.hcl` file that can be configured to better match your environment and requirements.
 
@@ -71,10 +71,10 @@ flowpipe pipeline run list_issues
 To pass values into pipeline [parameters](https://flowpipe.io/docs/using-flowpipe/pipeline-parameters), use the following syntax:
 
 ```sh
-flowpipe pipeline run list_issues --pipeline-arg project_key="SBT"
+flowpipe pipeline run list_issues --arg project_key="SBT"
 ```
 
-Multiple pipeline args can be passed in with separate `--pipeline-arg` flags.
+Multiple pipeline args can be passed in with separate `--arg` flags.
 
 For more information on passing arguments, please see [Pipeline Args](https://flowpipe.io/docs/using-flowpipe/pipeline-arguments).
 

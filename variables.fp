@@ -1,8 +1,6 @@
 variable "token" {
   type        = string
   description = "Jira API access token."
-  # TODO: Add once supported
-  # sensitive  = true
 }
 
 variable "user_email" {

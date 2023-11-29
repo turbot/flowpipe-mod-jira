@@ -1,6 +1,6 @@
 pipeline "update_issue" {
   title       = "Update an Issue"
-  description = "Update an existing issue."
+  description = "Update fields of an existing issue."
 
   param "api_base_url" {
     type        = string

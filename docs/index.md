@@ -55,7 +55,7 @@ Variables with defaults set do not need to be explicitly set, but it may be help
 Start the Flowpipe server to get started:
 
 ```sh
-flowpipe service start
+flowpipe server
 ```
 
 Run a pipeline:

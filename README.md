@@ -11,7 +11,6 @@ A collection of [Flowpipe](https://flowpipe.io) pipelines that can be used to:
 ## Documentation
 
 - **[Pipelines →](https://hub.flowpipe.io/mods/turbot/jira/pipelines)**
-- **[Triggers →](https://hub.flowpipe.io/mods/turbot/jira/triggers)**
 
 ## Getting started
 
@@ -53,7 +52,7 @@ Variables with defaults set do not need to be explicitly set, but it may be help
 Start your server to get started:
 
 ```sh
-flowpipe service start
+flowpipe server
 ```
 
 Run a pipeline:

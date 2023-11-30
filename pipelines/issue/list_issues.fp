@@ -38,11 +38,17 @@ pipeline "list_issues" {
       password = param.token
     }
 
+    loop {
+      until = result.response_body.startAt + length(result.response_body.issues) >= result.response_body.total
+      url   = "${param.api_base_url}/rest/api/2/search?jql=project=${param.project_key}&startAt=${result.response_body.startAt + length(result.response_body.issues)}"
+    }
   }
 
   output "issues" {
     description = "List of issues."
-    value       = step.http.list_issues.response_body
+    value = {
+      issues = flatten([for issue in step.http.list_issues : issue.response_body.issues])
+    }
   }
 
 }

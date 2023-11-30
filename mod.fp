@@ -1,6 +1,6 @@
 mod "jira" {
   title         = "Jira"
-  description   = "Run pipelines to supercharge your Jira triggers using Flowpipe."
+  description   = "Run pipelines to supercharge your Jira workflows using Flowpipe."
   color         = "#2684FF"
   documentation = file("./docs/index.md")
   icon          = "/images/flowpipe/mods/turbot/jira.svg"
@@ -8,7 +8,7 @@ mod "jira" {
 
   opengraph {
     title       = "Jira Library Mod for Flowpipe"
-    description = "Run pipelines and triggers that interact with Jira."
+    description = "Run pipelines to supercharge your Jira workflows using Flowpipe."
     image       = "/images/flowpipe/mods/turbot/jira-social-graphic.png"
   }
 }

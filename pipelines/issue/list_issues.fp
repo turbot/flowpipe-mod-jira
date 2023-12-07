@@ -2,6 +2,10 @@ pipeline "list_issues" {
   title       = "List Issues"
   description = "List of issues in a Jira project."
 
+  tags = {
+    type = "featured"
+  }
+  
   param "api_base_url" {
     type        = string
     description = local.api_base_url_param_description

@@ -2,6 +2,10 @@ pipeline "update_issue" {
   title       = "Update an Issue"
   description = "Update fields of an existing issue."
 
+  tags = {
+    type = "featured"
+  }
+
   param "api_base_url" {
     type        = string
     description = local.api_base_url_param_description

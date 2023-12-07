@@ -2,6 +2,10 @@ pipeline "create_issue" {
   title       = "Create an Issue"
   description = "Create a new issue in a Jira project."
 
+  tags = {
+    type = "featured"
+  }
+
   param "api_base_url" {
     type        = string
     description = local.api_base_url_param_description

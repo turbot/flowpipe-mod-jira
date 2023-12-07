@@ -15,7 +15,6 @@ pipeline "create_issue" {
   param "project_key" {
     type        = string
     description = local.project_key_param_description
-    default     = var.project_key
   }
 
   param "issue_type" {

@@ -15,7 +15,6 @@ pipeline "list_issues" {
   param "project_key" {
     type        = string
     description = local.project_key_param_description
-    default     = var.project_key
   }
 
   step "http" "list_issues" {

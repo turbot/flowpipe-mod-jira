@@ -2,22 +2,10 @@ pipeline "transition_issue" {
   title       = "Performs an issue transition"
   description = "Performs an issue transition updates the fields from the transition."
 
-  param "api_base_url" {
+  param "cred" {
     type        = string
-    description = local.api_base_url_param_description
-    default     = var.api_base_url
-  }
-
-  param "token" {
-    type        = string
-    description = local.token_param_description
-    default     = var.token
-  }
-
-  param "user_email" {
-    type        = string
-    description = local.user_email_param_description
-    default     = var.user_email
+    description = local.cred_param_description
+    default     = "default"
   }
 
   param "issue_id" {
@@ -32,7 +20,7 @@ pipeline "transition_issue" {
 
   step "http" "transition_issue" {
     method = "post"
-    url    = "${param.api_base_url}/rest/api/2/issue/${param.issue_id}/transitions"
+    url    = "${credential.jira[param.cred].base_url}/rest/api/2/issue/${param.issue_id}/transitions"
     request_headers = {
       Content-Type = "application/json"
     }
@@ -44,8 +32,8 @@ pipeline "transition_issue" {
     })
 
     basic_auth {
-      username = param.user_email
-      password = param.token
+      username = credential.jira[param.cred].username
+      password = credential.jira[param.cred].api_token
     }
   }
 }

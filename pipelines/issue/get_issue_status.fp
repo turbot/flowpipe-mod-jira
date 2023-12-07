@@ -3,22 +3,10 @@ pipeline "get_issue_status" {
   title       = "Get an issue status"
   description = "Retrieve issue by status."
 
-  param "api_base_url" {
+  param "cred" {
     type        = string
-    description = local.api_base_url_param_description
-    default     = var.api_base_url
-  }
-
-  param "token" {
-    type        = string
-    description = local.token_param_description
-    default     = var.token
-  }
-
-  param "user_email" {
-    type        = string
-    description = local.user_email_param_description
-    default     = var.user_email
+    description = local.cred_param_description
+    default     = "default"
   }
 
   # Here we can pass issue ID as well as issue KEY
@@ -29,14 +17,14 @@ pipeline "get_issue_status" {
 
   step "http" "get_issue_status" {
     method = "get"
-    url    = "${param.api_base_url}/rest/api/2/issue/${param.issue_id}?fields=status"
+    url    = "${credential.jira[param.cred].base_url}/rest/api/2/issue/${param.issue_id}?fields=status"
     request_headers = {
       Content-Type = "application/json"
     }
 
     basic_auth {
-      username = param.user_email
-      password = param.token
+      username = credential.jira[param.cred].username
+      password = credential.jira[param.cred].api_token
     }
 
   }

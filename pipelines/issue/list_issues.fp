@@ -5,23 +5,11 @@ pipeline "list_issues" {
   tags = {
     type = "featured"
   }
-  
-  param "api_base_url" {
-    type        = string
-    description = local.api_base_url_param_description
-    default     = var.api_base_url
-  }
 
-  param "token" {
+  param "cred" {
     type        = string
-    description = local.token_param_description
-    default     = var.token
-  }
-
-  param "user_email" {
-    type        = string
-    description = local.user_email_param_description
-    default     = var.user_email
+    description = local.cred_param_description
+    default     = "default"
   }
 
   param "project_key" {
@@ -32,19 +20,19 @@ pipeline "list_issues" {
 
   step "http" "list_issues" {
     method = "get"
-    url    = "${param.api_base_url}/rest/api/2/search?jql=project=${param.project_key}"
+    url    = "${credential.jira[param.cred].base_url}/rest/api/2/search?jql=project=${param.project_key}"
     request_headers = {
       Content-Type = "application/json"
     }
 
     basic_auth {
-      username = param.user_email
-      password = param.token
+      username = credential.jira[param.cred].username
+      password = credential.jira[param.cred].api_token
     }
 
     loop {
       until = result.response_body.startAt + length(result.response_body.issues) >= result.response_body.total
-      url   = "${param.api_base_url}/rest/api/2/search?jql=project=${param.project_key}&startAt=${result.response_body.startAt + length(result.response_body.issues)}"
+      url   = "${credential.jira[param.cred].base_url}/rest/api/2/search?jql=project=${param.project_key}&startAt=${result.response_body.startAt + length(result.response_body.issues)}"
     }
   }
 

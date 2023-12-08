@@ -58,7 +58,7 @@ pipeline "create_issue" {
     }
 
     request_body = jsonencode({
-      fields = {
+      fields = merge({
         project = {
           key = param.project_key
         },
@@ -67,9 +67,11 @@ pipeline "create_issue" {
         issuetype = {
           name = param.issue_type
         },
-        priority = param.priority != null ? { name = param.priority } : { name = "Medium" },
         assignee = param.assignee_id != null ? { id = param.assignee_id } : {}
-      }
+        },
+        // Include priority only if it is not null
+        param.priority != null ? { priority = { name = param.priority } } : {}
+      )
     })
   }
 

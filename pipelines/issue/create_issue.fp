@@ -69,7 +69,7 @@ pipeline "create_issue" {
         },
         assignee = param.assignee_id != null ? { id = param.assignee_id } : {}
         },
-        // Include priority only if it is not null
+
         param.priority != null ? { priority = { name = param.priority } } : {}
       )
     })

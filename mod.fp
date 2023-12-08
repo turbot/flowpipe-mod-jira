@@ -4,7 +4,7 @@ mod "jira" {
   color         = "#2684FF"
   documentation = file("./docs/index.md")
   icon          = "/images/flowpipe/mods/turbot/jira.svg"
-  categories    = ["jira"]
+  categories    = ["productivity"]
 
   opengraph {
     title       = "Jira Library Mod for Flowpipe"

@@ -2,10 +2,6 @@ pipeline "list_issues" {
   title       = "List Issues"
   description = "List of issues in a Jira project."
 
-  tags = {
-    type = "featured"
-  }
-
   param "cred" {
     type        = string
     description = local.cred_param_description

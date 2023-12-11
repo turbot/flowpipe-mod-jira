@@ -1,6 +1,6 @@
 
 pipeline "get_issue_status" {
-  title       = "Get an issue status"
+  title       = "Get Issue Status"
   description = "Retrieve issue by status."
 
   param "cred" {
@@ -9,7 +9,6 @@ pipeline "get_issue_status" {
     default     = "default"
   }
 
-  # Here we can pass issue ID as well as issue KEY
   param "issue_id" {
     type        = string
     description = local.issue_id_param_description

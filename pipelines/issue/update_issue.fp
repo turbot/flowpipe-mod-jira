@@ -1,5 +1,5 @@
 pipeline "update_issue" {
-  title       = "Update an Issue"
+  title       = "Update Issue"
   description = "Update fields of an existing issue."
 
   tags = {

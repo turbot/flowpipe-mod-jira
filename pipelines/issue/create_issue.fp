@@ -1,5 +1,5 @@
 pipeline "create_issue" {
-  title       = "Create an Issue"
+  title       = "Create Issue"
   description = "Create a new issue in a Jira project."
 
   tags = {

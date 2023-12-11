@@ -1,5 +1,5 @@
 pipeline "search_issues_by_jql" {
-  title       = "Search Issues in Jira"
+  title       = "Search Issues"
   description = "Search for issues in Jira based on JQL."
 
   param "cred" {

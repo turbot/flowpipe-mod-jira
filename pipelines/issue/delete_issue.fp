@@ -1,6 +1,6 @@
 pipeline "delete_issue" {
-  title       = "Delete an Issue"
-  description = "Delete an issue from a project in Jira.(Note:An issue cannot be deleted if it has one or more subtasks.)"
+  title       = "Delete Issue"
+  description = "Delete an issue from a project in Jira. An issue cannot be deleted if it has one or more subtasks."
 
   tags = {
     type = "featured"

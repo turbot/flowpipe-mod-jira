@@ -1,6 +1,6 @@
 pipeline "get_issue_transitions" {
   title       = "Get Issue Transitions"
-  description = "Returns either all transitions or a transition that can be performed by the user on a Jira issue"
+  description = "Returns either all transitions or a transition that can be performed by the user on an issue, based on the issue's status."
 
   param "cred" {
     type        = string

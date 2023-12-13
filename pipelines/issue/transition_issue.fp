@@ -1,5 +1,5 @@
 pipeline "transition_issue" {
-  title       = "Performs Issue Transition"
+  title       = "Transition Issue"
   description = "Performs an issue transition updates the fields from the transition."
 
   param "cred" {

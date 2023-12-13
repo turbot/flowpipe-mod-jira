@@ -1,6 +1,5 @@
-
 pipeline "get_issue" {
-  title       = "Get Issue Detail"
+  title       = "Get Issue"
   description = "Returns the details for an issue."
 
   param "cred" {

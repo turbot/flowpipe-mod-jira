@@ -1,5 +1,5 @@
 pipeline "add_comment" {
-  title       = "Adds Comment to Issue"
+  title       = "Adds Comment"
   description = "Adds a comment to an issue."
 
   param "cred" {

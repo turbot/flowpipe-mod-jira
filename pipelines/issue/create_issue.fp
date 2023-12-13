@@ -1,29 +1,20 @@
 pipeline "create_issue" {
-  title       = "Create an Issue"
+  title       = "Create Issue"
   description = "Create a new issue in a Jira project."
 
-  param "api_base_url" {
-    type        = string
-    description = local.api_base_url_param_description
-    default     = var.api_base_url
+  tags = {
+    type = "featured"
   }
 
-  param "token" {
+  param "cred" {
     type        = string
-    description = local.token_param_description
-    default     = var.token
-  }
-
-  param "user_email" {
-    type        = string
-    description = local.user_email_param_description
-    default     = var.user_email
+    description = local.cred_param_description
+    default     = "default"
   }
 
   param "project_key" {
     type        = string
     description = local.project_key_param_description
-    default     = var.project_key
   }
 
   param "issue_type" {
@@ -56,18 +47,18 @@ pipeline "create_issue" {
 
   step "http" "create_issue" {
     method = "post"
-    url    = "${param.api_base_url}/rest/api/2/issue"
+    url    = "${credential.jira[param.cred].base_url}/rest/api/2/issue"
     request_headers = {
       Content-Type = "application/json"
     }
 
     basic_auth {
-      username = param.user_email
-      password = param.token
+      username = credential.jira[param.cred].username
+      password = credential.jira[param.cred].api_token
     }
 
     request_body = jsonencode({
-      fields = {
+      fields = merge({
         project = {
           key = param.project_key
         },
@@ -76,9 +67,11 @@ pipeline "create_issue" {
         issuetype = {
           name = param.issue_type
         },
-        priority = param.priority != null ? { name = param.priority } : { name = "Medium" },
         assignee = param.assignee_id != null ? { id = param.assignee_id } : {}
-      }
+        },
+
+        param.priority != null ? { priority = { name = param.priority } } : {}
+      )
     })
   }
 

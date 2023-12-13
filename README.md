@@ -1,19 +1,16 @@
 # Jira Mod for Flowpipe
 
-A collection of [Flowpipe](https://flowpipe.io) pipelines that can be used to:
-- Create issues
-- Update issues
-- Delete issues
-- And more!
-
-![image](https://github.com/turbot/flowpipe-mod-jira/blob/staging/docs/images/flowpipe_test_run.png?raw=true)
+Jira pipeline library for [Flowpipe](https://flowpipe.io), enabling seamless integration of Jira services into your workflows.
 
 ## Documentation
 
 - **[Pipelines →](https://hub.flowpipe.io/mods/turbot/jira/pipelines)**
-- **[Triggers →](https://hub.flowpipe.io/mods/turbot/jira/triggers)**
 
 ## Getting started
+
+### Requirements
+
+Docker daemon must be installed and running. Please see [Install Docker Engine](https://docs.docker.com/engine/install/) for more information.
 
 ### Installation
 
@@ -31,29 +28,36 @@ git clone https://github.com/turbot/flowpipe-mod-jira.git
 cd flowpipe-mod-jira
 ```
 
-### Configuration
+### Credentials
 
-Configure your credentials:
+By default, the following environment variables will be used for authentication:
+
+- `JIRA_API_TOKEN`
+- `JIRA_URL`
+- `JIRA_USER`
+
+You can also create `credential` resources in configuration files:
 
 ```sh
-cp flowpipe.pvars.example flowpipe.pvars
-vi flowpipe.pvars
+vi ~/.flowpipe/config/jira.fpc
 ```
 
-It's recommended to configure credentials through [input variables](https://flowpipe.io/docs/using-flowpipe/mod-variables) by setting them in the `flowpipe.pvars` file.
+```hcl
+credential "jira" "jira_cred" {
+  base_url    = "https://test.atlassian.net/"
+  api_token   = "ATATT3........."
+  username    = "abc@email.com"
+}
+```
 
-**Note:** Credentials can also be passed in each pipeline run with `--pipeline-args access_token=N887JaasasasaVMsdJBB6B`.
-
-Additional input variables may be defined in the mod's `variables.hcl` file that can be configured to better match your environment and requirements.
-
-Variables with defaults set do not need to be explicitly set, but it may be helpful to override them.
+For more information on credentials in Flowpipe, please see [Managing Credentials](https://flowpipe.io/docs/run/credentials).
 
 ### Usage
 
-Start your server to get started:
+List pipelines:
 
 ```sh
-flowpipe service start
+flowpipe pipeline list
 ```
 
 Run a pipeline:
@@ -62,33 +66,35 @@ Run a pipeline:
 flowpipe pipeline run list_issues
 ```
 
-## Passing pipeline arguments
-
-To pass values into pipeline [parameters](https://flowpipe.io/docs/using-flowpipe/pipeline-parameters), use the following syntax:
+You can pass in pipeline arguments as well:
 
 ```sh
-flowpipe pipeline run list_issues --pipeline-arg project_key="SBT"
+flowpipe pipeline run list_issues --arg project_key=SBT
 ```
 
-Multiple pipeline args can be passed in with separate `--pipeline-arg` flags.
+To use a specific `credential`, specify the `cred` pipeline argument:
 
-For more information on passing arguments, please see [Pipeline Args](https://flowpipe.io/docs/using-flowpipe/pipeline-arguments).
+```sh
+flowpipe pipeline run list_issues --arg cred=jira_cred --arg project_key=SBT
+```
 
-## Contributing
+For more examples on how you can run pipelines, please see [Run Pipelines](https://flowpipe.io/docs/run/pipelines).
 
-If you have an idea for additional controls or just want to help maintain and extend this mod ([or others](https://github.com/topics/flowpipe-mod)) we would love you to join the community and start contributing.
+### Configuration
 
-- **[Join #flowpipe in our Slack community ](https://flowpipe.io/community/join)**
+No additional configuration is required.
 
-Please see the [contribution guidelines](https://github.com/turbot/flowpipe/blob/main/CONTRIBUTING.md) and our [code of conduct](https://github.com/turbot/flowpipe/blob/main/CODE_OF_CONDUCT.md).
+## Open Source & Contributing
+
+This repository is published under the [Apache 2.0 license](https://www.apache.org/licenses/LICENSE-2.0). Please see our [code of conduct](https://github.com/turbot/.github/blob/main/CODE_OF_CONDUCT.md). We look forward to collaborating with you!
+
+[Flowpipe](https://flowpipe.io) is a product produced from this open source software, exclusively by [Turbot HQ, Inc](https://turbot.com). It is distributed under our commercial terms. Others are allowed to make their own distribution of the software, but cannot use any of the Turbot trademarks, cloud services, etc. You can learn more in our [Open Source FAQ](https://turbot.com/open-source).
+
+## Get Involved
+
+**[Join #flowpipe on Slack →](https://flowpipe.io/community/join)**
 
 Want to help but not sure where to start? Pick up one of the `help wanted` issues:
 
 - [Flowpipe](https://github.com/turbot/flowpipe/labels/help%20wanted)
-- [Jira Mod](https://github.com/turbot/flowpipe-mod-jira/labels/help%20wanted)
-
-## License
-
-This mod is licensed under the [Apache License 2.0](https://github.com/turbot/flowpipe-mod-jira/blob/main/LICENSE).
-
-Flowpipe is licensed under the [AGPLv3](https://github.com/turbot/flowpipe/blob/main/LICENSE).
+- [JIRA Mod](https://github.com/turbot/flowpipe-mod-jira/labels/help%20wanted)

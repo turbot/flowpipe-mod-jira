@@ -1,26 +1,11 @@
-
 pipeline "get_issue" {
-  title       = "Get an issue detail"
-  description = "Retrieve details about the issue."
+  title       = "Get Issue"
+  description = "Returns the details for an issue."
 
-  param "api_base_url" {
+  param "cred" {
     type        = string
-    description = local.api_base_url_param_description
-    default     = var.api_base_url
-  }
-
-  param "token" {
-    type        = string
-    description = local.token_param_description
-    default     = var.token
-    # TODO: Add once supported
-    # sensitive  = true
-  }
-
-  param "user_email" {
-    type        = string
-    description = local.user_email_param_description
-    default     = var.user_email
+    description = local.cred_param_description
+    default     = "default"
   }
 
   param "issue_id" {
@@ -30,14 +15,14 @@ pipeline "get_issue" {
 
   step "http" "get_issue_details" {
     method = "get"
-    url    = "${param.api_base_url}/rest/api/2/issue/${param.issue_id}"
+    url    = "${credential.jira[param.cred].base_url}/rest/api/2/issue/${param.issue_id}"
     request_headers = {
       Content-Type = "application/json"
     }
 
     basic_auth {
-      username = param.user_email
-      password = param.token
+      username = credential.jira[param.cred].username
+      password = credential.jira[param.cred].api_token
     }
 
   }

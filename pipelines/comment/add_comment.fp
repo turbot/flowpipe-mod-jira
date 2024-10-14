@@ -2,10 +2,10 @@ pipeline "add_comment" {
   title       = "Adds Comment"
   description = "Adds a comment to an issue."
 
-  param "cred" {
-    type        = string
-    description = local.cred_param_description
-    default     = "default"
+  param "conn" {
+    type        = connection.jira
+    description = local.conn_param_description
+    default     = connection.jira.default
   }
 
   param "issue_id" {
@@ -20,14 +20,14 @@ pipeline "add_comment" {
 
   step "http" "add_comment" {
     method = "post"
-    url    = "${credential.jira[param.cred].base_url}/rest/api/2/issue/${param.issue_id}/comment"
+    url    = "${param.conn.base_url}/rest/api/2/issue/${param.issue_id}/comment"
     request_headers = {
       Content-Type = "application/json"
     }
 
     basic_auth {
-      username = credential.jira[param.cred].username
-      password = credential.jira[param.cred].api_token
+      username = param.conn.username
+      password = param.conn.api_token
     }
 
     request_body = jsonencode({

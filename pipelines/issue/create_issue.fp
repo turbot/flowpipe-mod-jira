@@ -3,13 +3,13 @@ pipeline "create_issue" {
   description = "Create a new issue in a Jira project."
 
   tags = {
-    type = "featured"
+    recommended = "true"
   }
 
-  param "cred" {
-    type        = string
-    description = local.cred_param_description
-    default     = "default"
+  param "conn" {
+    type        = connection.jira
+    description = local.conn_param_description
+    default     = connection.jira.default
   }
 
   param "project_key" {
@@ -47,14 +47,14 @@ pipeline "create_issue" {
 
   step "http" "create_issue" {
     method = "post"
-    url    = "${credential.jira[param.cred].base_url}/rest/api/2/issue"
+    url    = "${param.conn.base_url}/rest/api/2/issue"
     request_headers = {
       Content-Type = "application/json"
     }
 
     basic_auth {
-      username = credential.jira[param.cred].username
-      password = credential.jira[param.cred].api_token
+      username = param.conn.username
+      password = param.conn.api_token
     }
 
     request_body = jsonencode({

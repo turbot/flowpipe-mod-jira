@@ -104,7 +104,7 @@ flowpipe pipeline run list_issues --arg project_key=SBT
 To use a specific `connection`, specify the `conn` pipeline argument:
 
 ```sh
-flowpipe pipeline run list_issues --arg conn=jira_profile --arg project_key=SBT
+flowpipe pipeline run list_issues --arg conn=connection.jira.jira_profile --arg project_key=SBT
 ```
 
 ## Open Source & Contributing

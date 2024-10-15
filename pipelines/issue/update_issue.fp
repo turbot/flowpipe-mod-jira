@@ -56,9 +56,8 @@ pipeline "update_issue" {
       fields = merge({
         summary     = param.summary,
         description = param.description != null ? param.description : null,
-        assignee    = param.assignee_id != null ? { id = param.assignee_id } : {}
         },
-        param.assignee != null ? { assignee = { id = param.assignee_id } } : {},
+        param.assignee_id != null ? { assignee = { id = param.assignee_id } } : {},
         param.priority != null ? { priority = { name = param.priority } } : {}
       )
     })

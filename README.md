@@ -17,7 +17,7 @@ brew tap turbot/tap
 brew install flowpipe
 ```
 
-### Credentials
+### Connections
 
 By default, the following environment variables will be used for authentication:
 
@@ -25,21 +25,21 @@ By default, the following environment variables will be used for authentication:
 - `JIRA_URL`
 - `JIRA_USER`
 
-You can also create `credential` resources in configuration files:
+You can also create `connection` resources in configuration files:
 
 ```sh
 vi ~/.flowpipe/config/jira.fpc
 ```
 
 ```hcl
-credential "jira" "jira_cred" {
+connection "jira" "jira_conn" {
   base_url    = "https://test.atlassian.net/"
   api_token   = "ATATT3........."
   username    = "abc@email.com"
 }
 ```
 
-For more information on credentials in Flowpipe, please see [Managing Credentials](https://flowpipe.io/docs/run/credentials).
+For more information on connections in Flowpipe, please see [Managing connections](https://flowpipe.io/docs/run/connections).
 
 ### Usage
 
@@ -101,10 +101,10 @@ Run a pipeline:
 flowpipe pipeline run list_issues --arg project_key=SBT
 ```
 
-To use a specific `credential`, specify the `cred` pipeline argument:
+To use a specific `connection`, specify the `conn` pipeline argument:
 
 ```sh
-flowpipe pipeline run list_issues --arg cred=jira_profile --arg project_key=SBT
+flowpipe pipeline run list_issues --arg conn=connection.jira.jira_profile --arg project_key=SBT
 ```
 
 ## Open Source & Contributing

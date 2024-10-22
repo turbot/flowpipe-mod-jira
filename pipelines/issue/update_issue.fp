@@ -3,13 +3,13 @@ pipeline "update_issue" {
   description = "Update fields of an existing issue."
 
   tags = {
-    type = "featured"
+    recommended = "true"
   }
 
-  param "cred" {
-    type        = string
-    description = local.cred_param_description
-    default     = "default"
+  param "conn" {
+    type        = connection.jira
+    description = local.conn_param_description
+    default     = connection.jira.default
   }
 
   param "issue_id" {
@@ -42,23 +42,22 @@ pipeline "update_issue" {
 
   step "http" "update_issue" {
     method = "put"
-    url    = "${credential.jira[param.cred].base_url}/rest/api/2/issue/${param.issue_id}"
+    url    = "${param.conn.base_url}/rest/api/2/issue/${param.issue_id}"
     request_headers = {
       Content-Type = "application/json"
     }
 
     basic_auth {
-      username = credential.jira[param.cred].username
-      password = credential.jira[param.cred].api_token
+      username = param.conn.username
+      password = param.conn.api_token
     }
 
     request_body = jsonencode({
       fields = merge({
         summary     = param.summary,
         description = param.description != null ? param.description : null,
-        assignee = param.assignee_id != null ? { id = param.assignee_id } : {}
         },
-        param.assignee != null ? { assignee = { id = param.assignee_id } } : {},
+        param.assignee_id != null ? { assignee = { id = param.assignee_id } } : {},
         param.priority != null ? { priority = { name = param.priority } } : {}
       )
     })

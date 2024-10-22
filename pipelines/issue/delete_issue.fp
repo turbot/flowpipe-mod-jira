@@ -3,13 +3,13 @@ pipeline "delete_issue" {
   description = "Delete an issue from a project in Jira. An issue cannot be deleted if it has one or more subtasks."
 
   tags = {
-    type = "featured"
+    recommended = "true"
   }
 
-  param "cred" {
-    type        = string
-    description = local.cred_param_description
-    default     = "default"
+  param "conn" {
+    type        = connection.jira
+    description = local.conn_param_description
+    default     = connection.jira.default
   }
 
   param "issue_id" {
@@ -19,14 +19,14 @@ pipeline "delete_issue" {
 
   step "http" "delete_issue" {
     method = "delete"
-    url    = "${credential.jira[param.cred].base_url}/rest/api/2/issue/${param.issue_id}"
+    url    = "${param.conn.base_url}/rest/api/2/issue/${param.issue_id}"
     request_headers = {
       Content-Type = "application/json"
     }
 
     basic_auth {
-      username = credential.jira[param.cred].username
-      password = credential.jira[param.cred].api_token
+      username = param.conn.username
+      password = param.conn.api_token
     }
   }
 }

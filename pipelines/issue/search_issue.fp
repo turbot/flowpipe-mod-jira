@@ -2,10 +2,10 @@ pipeline "search_issues_by_jql" {
   title       = "Search Issues by JQL"
   description = "Search for issues in Jira based on JQL."
 
-  param "cred" {
-    type        = string
-    description = local.cred_param_description
-    default     = "default"
+  param "conn" {
+    type        = connection.jira
+    description = local.conn_param_description
+    default     = connection.jira.default
   }
 
   param "jql_query" {
@@ -15,14 +15,14 @@ pipeline "search_issues_by_jql" {
 
   step "http" "search_issues_by_jql" {
     method = "get"
-    url    = "${credential.jira[param.cred].base_url}/rest/api/2/search?jql=${urlencode(param.jql_query)}"
+    url    = "${param.conn.base_url}/rest/api/2/search?jql=${urlencode(param.jql_query)}"
     request_headers = {
       Accept = "application/json"
     }
 
     basic_auth {
-      username = credential.jira[param.cred].username
-      password = credential.jira[param.cred].api_token
+      username = param.conn.username
+      password = param.conn.api_token
     }
 
     error {
